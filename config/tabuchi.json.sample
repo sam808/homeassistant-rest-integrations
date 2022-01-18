@@ -1,0 +1,8 @@
+{
+    "user_id": "useridfortabuchi",
+    "password": "passwordfortabuchi",
+
+    "facility_id": "facilityidfortabuchi",
+
+    "debug": true|false
+}
