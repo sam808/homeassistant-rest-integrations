@@ -100,13 +100,13 @@
                             'uom'           => $json['data']['facility'][0]['TotalElectricEnergy']['unit'],
                         ],
                         'live'          => [
-                            'value'         => $json['data']['facility'][0]['gw'][0]['remocon'][0]['Power']['value'],
-                            'uom'           => $json['data']['facility'][0]['gw'][0]['remocon'][0]['Power']['unit'],
+                            'value'         => $json['data']['facility'][0]['TodayPower']['value'],
+                            'uom'           => $json['data']['facility'][0]['TodayPower']['unit'],
                         ],
                     ],
                     'usage'         => [
                         'live'          => [
-                            'battery_value' => $json['data']['facility'][0]['gw'][0]['remocon'][0]['Discharge'],
+                            'battery_value' => $json['data']['facility'][0]['gw'][0]['remocon'][0]['Battery'],
                             'grid_value'    => $json['data']['facility'][0]['gw'][0]['remocon'][0]['BuyPower'],
                             'total_value'   => $json['data']['facility'][0]['gw'][0]['remocon'][0]['UsePower'],
                             'uom'           => $json['data']['facility'][0]['gw'][0]['remocon'][0]['Power']['unit'],
