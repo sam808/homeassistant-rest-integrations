@@ -29,6 +29,16 @@
             $this->logger = new \Transeo\Loggers\EchoLogger();
         }
 
+        private static function format_power_number($number)
+        {
+            if (!is_numeric($number)) {
+                return 0.00;
+            }
+
+            return number_format($number, 2);
+
+        }
+
         public function fetch()
         {
             if (self::$debug) {
@@ -92,23 +102,23 @@
                     ],
                     'generation'    => [
                         '24h'           => [
-                            'value'         => $json['data']['facility'][0]['TodayElectricEnergy']['value'],
+                            'value'         => self::format_power_number($json['data']['facility'][0]['TodayElectricEnergy']['value']),
                             'uom'           => $json['data']['facility'][0]['TodayElectricEnergy']['unit'],
                         ],
                         'lifetime'  => [
-                            'value'         => $json['data']['facility'][0]['TotalElectricEnergy']['value'],
+                            'value'         => self::format_power_number($json['data']['facility'][0]['TotalElectricEnergy']['value']),
                             'uom'           => $json['data']['facility'][0]['TotalElectricEnergy']['unit'],
                         ],
                         'live'          => [
-                            'value'         => $json['data']['facility'][0]['TodayPower']['value'],
+                            'value'         => self::format_power_number($json['data']['facility'][0]['TodayPower']['value']),
                             'uom'           => $json['data']['facility'][0]['TodayPower']['unit'],
                         ],
                     ],
                     'usage'         => [
                         'live'          => [
-                            'battery_value' => $json['data']['facility'][0]['gw'][0]['remocon'][0]['Battery'],
-                            'grid_value'    => $json['data']['facility'][0]['gw'][0]['remocon'][0]['BuyPower'],
-                            'total_value'   => $json['data']['facility'][0]['gw'][0]['remocon'][0]['UsePower'],
+                            'battery_value' => self::format_power_number($json['data']['facility'][0]['gw'][0]['remocon'][0]['Battery']),
+                            'grid_value'    => self::format_power_number($json['data']['facility'][0]['gw'][0]['remocon'][0]['BuyPower']),
+                            'total_value'   => self::format_power_number($json['data']['facility'][0]['gw'][0]['remocon'][0]['UsePower']),
                             'uom'           => $json['data']['facility'][0]['gw'][0]['remocon'][0]['Power']['unit'],
                         ]        
                     ],
