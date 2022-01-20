@@ -31,11 +31,13 @@
 
         private static function format_power_number($number)
         {
+            $number = preg_replace('/[^0-9]/', '', $number);
+
             if (!is_numeric($number)) {
                 return 0.00;
             }
 
-            return number_format($number, 2);
+            return round($number, 2);
 
         }
 
