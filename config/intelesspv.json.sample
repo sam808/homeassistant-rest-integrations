@@ -1,0 +1,8 @@
+{
+    "user_id": "useridforinteless",
+    "password": "passwordforinteless",
+
+    "plant_id": "plantidforinetless",
+
+    "debug": true|false
+}

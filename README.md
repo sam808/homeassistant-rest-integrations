@@ -9,6 +9,7 @@ Rando endpoints to be used as HA RESTful sensors because there isn't HA support 
 5. use the source you want
 5a. /api/tabuchi
 5b. /api/bluebot
+5c. api/intelesspv
 
 # Tabuchi .yaml example
 ```
@@ -39,20 +40,20 @@ Rando endpoints to be used as HA RESTful sensors because there isn't HA support 
         value_template: "{{ state_attr('sensor.tabuchi_solar_sensors', 'data')['generation']['live']['value'] }}"
         friendly_name: "Current Power Generation"
         entity_id: sensor.tabuchi_solar_power_generation_live
-        unit_of_measurement: "kWh"
+        unit_of_measurement: "kW"
       tabuchi_solar_usage_live_total:
         value_template: "{{ state_attr('sensor.tabuchi_solar_sensors', 'data')['usage']['live']['total_value'] }}"
         friendly_name: "Current Total Power Usage"
         entity_id: sensor.tabuchi_solar_power_usage_live_total
-        unit_of_measurement: "kWh"
+        unit_of_measurement: "kW"
       tabuchi_solar_usage_live_battery:
-        value_template: "{{ state_attr('sensor.tabuchi_solar_sensors', 'data')['usage']['live']['battery_value'] }}"
+        value_template: "{{ state_attr('sensor.tabuchi_solar_sensors', 'data')['usage']['live']['battery_value'] }"
         friendly_name: "Current Battery Power Usage"
         entity_id: sensor.tabuchi_solar_power_usage_live_battery
-        unit_of_measurement: "kWh"
+        unit_of_measurement: "kW"
       tabuchi_solar_usage_live_grid:
         value_template: "{{ state_attr('sensor.tabuchi_solar_sensors', 'data')['usage']['live']['grid_value'] }}"
         friendly_name: "Current Grid Power Usage"
         entity_id: sensor.tabuchi_solar_power_usage_grid_total
-        unit_of_measurement: "kWh"
+        unit_of_measurement: "kW"
 ```
