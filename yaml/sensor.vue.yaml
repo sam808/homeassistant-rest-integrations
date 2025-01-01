@@ -1,0 +1,38 @@
+  - platform: template
+    scan_interval: 5
+    sensors:
+      energy_vue_total_solar_contribution:
+        friendly_name: Total Solar Contribution in Back Downstairs
+        unit_of_measurement: W
+        value_template: >
+          {% set ns = namespace(states=[]) %}
+          {% for s in states.sensor %}
+            {% if s.object_id.endswith('_1min') and s.object_id.startswith('solar') and s.state != 'unavailable' and s.state != 'unknown' %}
+              {% set ns.states = ns.states + [ s.state | float ] %}
+            {% endif %}
+          {% endfor %}
+          {{ -1 * ns.states | sum | round(3) }}
+
+  - platform: template
+    scan_interval: 5
+    sensors:
+      energy_vue_total_consumption:
+        friendly_name: Total Energy Consumption
+        unit_of_measurement: W
+        value_template: >
+          {% set ns = namespace(states=[]) %}
+          {% for s in states.sensor %}
+            {% if s.object_id.endswith('_1min') and not s.object_id.endswith('_123_1min') and not s.object_id.startswith('solar') and s.state != 'unavailable' and s.state != 'unknown'%}
+              {% set ns.states = ns.states + [ s.state | float ] %}
+            {% endif %}
+          {% endfor %}
+          {{ ns.states | sum | round(3) }}
+
+  - platform: template
+    scan_interval: 5
+    sensors:
+      energy_vue_back_downstairs_123_1min:
+        friendly_name: Back Downstairs Total Consumption
+        unit_of_measurement: W
+        value_template: >
+          {{ ( states('sensor.back_downstairs_123_1min') | float  - states('sensor.energy_vue_total_solar_contribution') | float ) | round(0) }}

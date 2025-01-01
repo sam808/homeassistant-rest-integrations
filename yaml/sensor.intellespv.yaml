@@ -1,0 +1,37 @@
+  - platform: rest
+    name: intelesspv_sensors
+    json_attributes:
+      - data
+    value_template: "{{ value_json.data.status }}"
+    force_update: true
+    resource: http://localhost:8081/homeassistant-rest-integrations/api/solark.php
+    scan_interval: 15
+    timeout: 15
+    force_update: true
+  - platform: template
+    scan_interval: 15
+    sensors:
+      intelesspv_battery_soc_live:
+        value_template: "{{ state_attr('sensor.intelesspv_sensors', 'data')['battery']['live_soc']['value'] }}"
+        friendly_name: "Current Battery State of Charge"
+        unit_of_measurement: "%"
+      intelesspv_generation_live:
+        value_template: "{{ state_attr('sensor.intelesspv_sensors', 'data')['generation']['live']['value'] }}"
+        friendly_name: "Current PV Generation"
+        unit_of_measurement: "W"
+      intelesspv_battery_supply_live:
+        value_template: "{{ state_attr('sensor.intelesspv_sensors', 'data')['battery']['live_supply']['value'] }}"
+        friendly_name: "Current Battery Supply"
+        unit_of_measurement: "W"
+      intelesspv_battery_usage_live:
+        value_template: "{{ state_attr('sensor.intelesspv_sensors', 'data')['usage']['live']['battery_demand_value'] }}"
+        friendly_name: "Current Battery Power Usage"
+        unit_of_measurement: "W"
+      intelesspv_grid_usage_live:
+        value_template: "{{ state_attr('sensor.intelesspv_sensors', 'data')['usage']['live']['grid_supply_value'] }}"
+        friendly_name: "Current Grid Power Supply"
+        unit_of_measurement: "W"
+      intelesspv_demand_live:
+        value_template: "{{ state_attr('sensor.intelesspv_sensors', 'data')['usage']['live']['demand_value'] }}"
+        friendly_name: "Current Demand"
+        unit_of_measurement: "W"

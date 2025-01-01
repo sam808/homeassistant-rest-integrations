@@ -1,0 +1,25 @@
+  - platform: rest
+    name: bluebot_sensors
+    json_attributes:
+      - data
+    value_template: "{{ value_json.data.status }}"
+    force_update: true
+    resource: http://localhost:8081/homeassistant-rest-integrations/api/bluebot.php
+    scan_interval: 60
+    timeout: 60
+    force_update: true
+  - platform: template
+    scan_interval: 60
+    sensors:
+      bluebot_usage_today:
+        value_template: "{{ state_attr('sensor.bluebot_sensors', 'data')['usage']['today_value'] }}"
+        friendly_name: "Today Usage"
+        unit_of_measurement: "Gallons"
+      bluebot_usage_month_to_date:
+        value_template: "{{ state_attr('sensor.bluebot_sensors', 'data')['usage']['mtd_value'] }}"
+        friendly_name: "Month-to-Date Usage"
+        unit_of_measurement: "Gallons"
+      bluebot_usage_last_month:
+        value_template: "{{ state_attr('sensor.bluebot_sensors', 'data')['usage']['last_month_value'] }}"
+        friendly_name: "Last Month Usage"
+        unit_of_measurement: "Gallons"

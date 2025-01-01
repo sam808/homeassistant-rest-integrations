@@ -1,0 +1,50 @@
+  - platform: integration
+    source: sensor.tabuchi_solar_usage_live_total
+    name: tabuchi_solar_usage_total_sum
+    round: 2
+    unit_time: h
+  - platform: integration
+    source: sensor.tabuchi_solar_generation_live
+    name: tabuchi_solar_generation_sum
+    round: 2
+    unit_time: h
+  - platform: rest
+    name: tabuchi_solar_sensors
+    json_attributes:
+      - data
+    value_template: "{{ value_json.data.status }}"
+    force_update: true
+    resource: http://localhost:8081/homeassistant-rest-integrations/api/tabuchi.php
+    scan_interval: 60
+    timeout: 30
+    force_update: true
+  - platform: template
+    sensors:
+      tabuchi_solar_battery:
+        value_template: "{{ state_attr('sensor.tabuchi_solar_sensors', 'data')['battery']['value'] }}"
+        friendly_name: "Battery Life"
+        unit_of_measurement: "%"
+      tabuchi_solar_generation_lifetime:
+        value_template: "{{ state_attr('sensor.tabuchi_solar_sensors', 'data')['generation']['lifetime']['value'] }}"
+        friendly_name: "Lifetime Power Generation"
+        unit_of_measurement: "kWh"
+      tabuchi_solar_generation_24h:
+        value_template: "{{ state_attr('sensor.tabuchi_solar_sensors', 'data')['generation']['24h']['value'] }}"
+        friendly_name: "24h Power Generation"
+        unit_of_measurement: "kWh"
+      tabuchi_solar_generation_live:
+        value_template: "{{ state_attr('sensor.tabuchi_solar_sensors', 'data')['generation']['live']['value'] }}"
+        friendly_name: "Current Power Generation"
+        unit_of_measurement: "kW"
+      tabuchi_solar_usage_live_total:
+        value_template: "{{ state_attr('sensor.tabuchi_solar_sensors', 'data')['usage']['live']['total_value'] }}"
+        friendly_name: "Current Total Power Usage"
+        unit_of_measurement: "kW"
+      tabuchi_solar_usage_live_battery:
+        value_template: "{{ state_attr('sensor.tabuchi_solar_sensors', 'data')['usage']['live']['battery_value'] }}"
+        friendly_name: "Current Battery Power Usage"
+        unit_of_measurement: "kW"
+      tabuchi_solar_usage_live_grid:
+        value_template: "{{ state_attr('sensor.tabuchi_solar_sensors', 'data')['usage']['live']['grid_value'] }}"
+        friendly_name: "Current Grid Power Usage"
+        unit_of_measurement: "kW"
