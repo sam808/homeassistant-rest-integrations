@@ -330,7 +330,7 @@
             }
 
             $total_today = array_values($usage_today)[1]['value'];
-            $total_mtd = $total_today + (int)\Transeo\Helpers\ArrayDatasets::sum($usage_this_month, 'total_gallons');
+            $total_mtd = $total_today + \Transeo\Helpers\ArrayDatasets::sum($usage_this_month, 'total_gallons');
             $total_last_month = \Transeo\Helpers\ArrayDatasets::sum($usage_last_month, 'total_gallons');
 
             echo json_encode([
@@ -338,9 +338,9 @@
                     'active'        => $devices[0]['active'],
                     'label'         => $devices[0]['label'],
                     'usage'         => [
-                        'today_value'         => $total_today,
-                        'mtd_value'           => $total_mtd,
-                        'last_month_value'    => $total_last_month,
+                        'today_value'         => round($total_today, 2),
+                        'mtd_value'           => round($total_mtd, 2),
+                        'last_month_value'    => round($total_last_month, 2),
                     ]
                 ]
             ]);
