@@ -5,9 +5,8 @@
     class Solark
     {
         const URI_HOME = 'https://www.mysolark.com/';
-        const URI_LOGIN = 'https://www.solarkcloud.com/oauth/token';
-        const URI_FLOW_DATA = 'https://www.solarkcloud.com/api/v1/plant/energy/%s/flow?date=%s';
-        const URI_USAGE_DATA = 'https://pv.inteless.com/plants/overview/%s/2';
+        const URI_LOGIN = 'https://api.solarkcloud.com/oauth/token';
+        const URI_FLOW_DATA = 'https://api.solarkcloud.com/api/v1/plant/energy/%s/flow?date=%s';
 
         private static $debug;
 
@@ -27,7 +26,7 @@
                 define('ENVIRONMENT', 'production');
             }
 
-            $this->logger = new \Transeo\Loggers\EchoLogger();
+            $this->logger = new Logger();
         }
 
         private static function format_power_number($number)
@@ -69,15 +68,15 @@
                 $info = $this->session->GetInfo();
                 $error = $this->session->GetError();
 
-                $this->logger->log('info', '[' . \Transeo\Helpers\Dates::toMySQL() . '] [' . get_class(self) . '] Logged in');
-                $this->logger->log('info', '[' . \Transeo\Helpers\Dates::toMySQL() . '] [' . get_class(self) . '] ' . json_encode($info));
+                $this->logger->log('info', '[' . \Transeo\Helpers\Dates::toMySQL() . '] [solark] Logged in');
+                $this->logger->log('info', '[' . \Transeo\Helpers\Dates::toMySQL() . '] [solark] ' . json_encode($info));
             }
             
             if (self::$debug) {
-                $this->logger->log('info', '[' . \Transeo\Helpers\Dates::toMySQL() . '] [' . get_class(self) . '] Getting data');
+                $this->logger->log('info', '[' . \Transeo\Helpers\Dates::toMySQL() . '] [solark] Getting data');
             }
-
-            $token = json_decode($this->session->response, TRUE)['data']['access_token'];
+            $json = json_decode($this->session->response, TRUE);
+            $token = $json['data']['access_token'];
 
             $this->session->URLFetch(
                 sprintf(self::URI_FLOW_DATA, self::$config['plant_id'], date('Y-m-d')),
@@ -96,9 +95,9 @@
                 $info = $this->session->GetInfo();
                 $error = $this->session->GetError();
 
-                $this->logger->log('info', '[' . \Transeo\Helpers\Dates::toMySQL() . '] [' . get_class(self) . '] Fetched data URI');
-                $this->logger->log('info', '[' . \Transeo\Helpers\Dates::toMySQL() . '] [' . get_class(self) . '] ' . json_encode($this->session->response));
-                $this->logger->log('info', '[' . \Transeo\Helpers\Dates::toMySQL() . '] [' . get_class(self) . '] ' . json_encode($info));
+                $this->logger->log('info', '[' . \Transeo\Helpers\Dates::toMySQL() . '] [solark] Fetched data URI');
+                $this->logger->log('info', '[' . \Transeo\Helpers\Dates::toMySQL() . '] [solark] ' . json_encode($this->session->response));
+                $this->logger->log('info', '[' . \Transeo\Helpers\Dates::toMySQL() . '] [solark] ' . json_encode($info));
                 
                 print_r($json);
             }

@@ -4,7 +4,6 @@
 
     class BlueBot
     {
-        const URI_HOME = 'https://ap.p3.enetelus.com/en/';
         const URI_LOGIN = 'https://dashboard.bluebot.com/login';
 
         const API_TOKEN_POST = [
