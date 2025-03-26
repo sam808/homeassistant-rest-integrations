@@ -15,6 +15,14 @@
             'client_id' => 'kyf00IZ8iCjOH8aPd0i7RUh7wsLRl1H7',
             'client_secret' => 'n732T_pxM1K0asGQqqEpkVi9dwOLr4aKZTDPzK635p6mlew4Sw0EiaV0kwqIibR-'
         ];
+        const API_TOKEN_POST2 = [
+            'grant_type' => 'password',
+            'username' => null,
+            'password' => null,
+            'audience' => 'https://bluebot-production.us.auth0.com/api/v2/',
+            'client_id' => 'kyf00IZ8iCjOH8aPd0i7RUh7wsLRl1H7',
+            'client_secret' => 'n732T_pxM1K0asGQqqEpkVi9dwOLr4aKZTDPzK635p6mlew4Sw0EiaV0kwqIibR-'
+        ];
         const URI_API_TOKEN = 'https://bluebot-production.us.auth0.com/oauth/token';
         // dashboard authorizes both audiences, but we only need the 2nd
         // {
@@ -194,6 +202,16 @@
             if (self::$debug) {
                 $this->logger->log('info', '[' . \Transeo\Helpers\Dates::toMySQL() . '] [bluebot] Logging in');
             }
+
+            $this->session->URLFetch(self::URI_LOGIN);
+
+            $post = self::API_TOKEN_POST2;
+            $post['username'] = self::$config['user_id'];
+            $post['password'] = self::$config['password'];
+
+            $this->session->URLFetch(self::URI_API_TOKEN, json_encode($post, JSON_UNESCAPED_SLASHES), [
+                'content-type: application/json'
+            ]);
 
             $post = self::API_TOKEN_POST;
             $post['username'] = self::$config['user_id'];
